@@ -208,7 +208,7 @@ return (
 <Button
           // isLoading={isAuthenticating}
           title='Sign In'
-
+          onPress={() => this.props.navigation.navigate('Main')}
           // onPress={this.signIn.bind(this)}
 />   
 <Button

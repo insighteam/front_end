@@ -175,12 +175,15 @@ class SignupScreen extends React.Component {
           sign up to continue
         </Text>
         <View style={styles.inputContainer}>
-          <Input
-            value={this.state.username}
-            placeholder="User Name"
-            type='username'
-            onChangeText={this.onChangeText}
-          />
+          <View>
+            <Input
+              value={this.state.username}
+              placeholder="User Name"
+              type='username'
+              onChangeText={this.onChangeText}
+            />
+            {/* < */}
+          </View>
           <Input
             value={this.state.id}
             placeholder="ID"
@@ -195,11 +198,11 @@ class SignupScreen extends React.Component {
             onChangeText={this.onChangeText}
           />
           <Input
-            placeholder="Phone Number"
-            type='phone_number'
-            keyboardType='numeric'
+            value={this.state.password}
+            placeholder="Password Check"
+            secureTextEntry
+            type='password'
             onChangeText={this.onChangeText}
-            value={this.state.phone_number}
           />
         </View>
         <Button
