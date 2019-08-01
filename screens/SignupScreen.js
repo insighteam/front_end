@@ -1,105 +1,3 @@
-// import React from 'react';
-// import { View, Text, Button, StyleSheet, Alert, ToastAndroid } from 'react-native';
-// import { TextInput } from 'react-native-gesture-handler';
-// // import { connect } from 'react-redux';
-
-// // import { checkEmail } from '../../actions';
-
-// class SignupScreen extends React.Component {
-//   state = {
-//     id: ''
-//   }
-
-//   handleID = (text) => {
-//     this.setState({ id: text })
-//   }
-
-//   render() {
-//     return (
-//       <View style={styles.container}>
-//         <View style={styles.topContainer}>
-//           <Text style={styles.emailText}>아이디</Text>
-//           <TextInput
-//             style={styles.input}
-//             underlineColorAndroid='transparent'
-//             placeholder=" 아이디"
-//             value={this.state.id}
-//             onChangeText={this.handleID}
-//           />
-//           <Button
-//             style={styles.button}
-//             disabled={!this.state.id}
-//             // onPress={()=>this.props.navigation.navigate('CheckPw', { email : this.state.email})}
-//             title="다음"
-//           />
-//         </View>
-//         <View style={styles.loginContainer}>
-//           <Text style={styles.loginText}>이미 계정이 있으신가요?</Text>
-//           <Text 
-//             style={styles.loginText2}
-//             onPress={()=>this.props.navigation.navigate('Login')}>로그인</Text>
-//         </View>
-//       </View>
-//     )
-//   }
-// }
-
-// const styles = StyleSheet.create({
-//   container: { 
-//     flex: 1,
-//     flexDirection: 'column',
-//     backgroundColor: 'white',
-//     paddingTop: Expo.Constants.statusBarHeight,
-//   },
-//   topContainer: {
-//     flex: 0.95,
-//     paddingTop: 20, 
-//     paddingLeft: 20,
-//     paddingRight: 20,
-//     borderBottomWidth: 0.5,
-//     borderBottomColor: 'lightgray'
-//   },
-//   emailText: {
-//     fontSize: 20,
-//     textAlign: 'center',
-//     marginBottom: 20
-//   },
-//   input: {
-//     borderWidth: 1,
-//     borderRadius: 5,
-//     width: '100%',
-//     height: 33,
-//     borderColor: 'lightgray',
-//     backgroundColor: '#f2f2f2',
-//     textDecorationColor: 'gray',
-//     marginBottom: 20
-//   },
-//   button: {
-//     width: '100%',
-//     marginTop: 50,
-//     padding: 5
-//   },
-//   loginContainer: {
-//     flex: 0.05,
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-//   loginText: {
-//     color: 'gray',
-//     fontSize: 10,
-//     marginRight: 10,
-//     textAlign: 'center'  
-//   },
-//   loginText2: {
-//     color: 'steelblue',
-//     fontSize: 10,
-//     textAlign: 'center'
-//   }
-// })
-
-// export default SignupScreen;
-
 import React, { Component } from 'react';
 import {
   Platform,
@@ -117,6 +15,7 @@ import {
 // import { connect } from 'react-redux'
 
 import { fonts, colors } from '../theme'
+import Toast from 'react-native-easy-toast'
 // import { createUser, confirmUserSignUp } from '../actions'
 
 import Input from '../components/Input'
@@ -198,10 +97,9 @@ class SignupScreen extends React.Component {
             onChangeText={this.onChangeText}
           />
           <Input
-            value={this.state.password}
-            placeholder="Password Check"
-            secureTextEntry
-            type='password'
+            value={this.state.email}
+            placeholder="email"
+            type='email'
             onChangeText={this.onChangeText}
           />
         </View>

@@ -1,222 +1,103 @@
-// import * as WebBrowser from 'expo-web-browser';
-// import React from 'react';
-// import { 
-//   StyleSheet, 
-//   Text,
-//   View, 
-//   Image,
-//   Button,
-//   Alert
-// } from 'react-native';
-// import { TextInput } from 'react-native-gesture-handler';
-
-// class LoginScreen extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.state={
-//       id: '',
-//       password: ''
-//     };
-//   }
-
-//   onPressButton = () => {
-//     // this.props.signin(this.state.email, this.state.password)
-//     this.setState({
-//       id: '',
-//       password: ''
-//     })
-//   }
-
-//   render() {
-//     return (
-//       <View style={styles.container}>
-//         <View style={styles.logo}>
-//           <Text>Moment</Text>
-//         </View>
-//         <View style={styles.inputContainer}>
-//           <TextInput
-//             style={styles.input}
-//             underlineColorAndroid='transparent'
-//             placeholder="아이디"
-//             onChangeText={(id) => this.setState({id})}
-//             value={this.state.id}
-//           />
-//           <TextInput
-//             style={styles.input}
-//             placeholder="비밀번호"
-//             secureTextEntry={true}
-//             underlineColorAndroid='transparent'
-//             onChangeText={(password) => this.setState({password})}
-//             value={this.state.password}
-//           />
-//           <Button
-//             style={styles.button}
-//             onPress={this.onPressButton}
-//             disabled={!this.state.id || !this.state.password}
-//             title="로그인"
-//           />
-//         </View>
-//         <View style={styles.signinContainer}>
-//           <Text style={styles.signinText}>계정이 없으신가요?</Text>
-//           <Text 
-//             style={styles.signinText2}
-//             onPress={()=>this.props.navigation.navigate('Signup')}>가입하기</Text>
-//         </View>
-//       </View>
-//     );
-//   }
-// }
-
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     flexDirection: 'column',
-//     justifyContent: 'center',
-//     backgroundColor: 'white',
-//   },
-//   logo: {
-//     flex: 2,
-//     justifyContent: 'flex-end',
-//     alignItems: 'center',
-//     marginBottom: 30
-//   },
-//   inputContainer: {
-//     flex: 3,
-//     paddingLeft: 20,
-//     paddingRight: 20,
-//     borderBottomWidth: 0.5,
-//     borderBottomColor: 'lightgray'
-//   },
-//   input: {
-//     borderWidth: 1,
-//     borderRadius: 5,
-//     borderColor: 'lightgray',
-//     padding: 3,
-//     paddingLeft: 10,
-//     backgroundColor: '#f2f2f2',
-//     textDecorationColor: 'gray',
-//     marginBottom: 10,
-//   },
-//   passwordText: {
-//     textAlign: 'right',
-//     color: 'steelblue',
-//     fontSize: 10,
-//     marginBottom: 10
-//   },
-//   button: {
-//     padding: 5,
-//     marginBottom: 50
-//   },
-//   signinContainer: {
-//     flex: 1,
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     justifyContent: 'center'
-//   },
-//   signinText: {
-//     color: 'gray',
-//     fontSize: 10,
-//     marginRight: 10,
-//     textAlign: 'center'  
-//   },
-//   signinText2: {
-//     color: 'steelblue',
-//     fontSize: 10,
-//     textAlign: 'center'
-//   }
-// });
-
-// export default LoginScreen;
-
 import React, { Component } from 'react';
 import {
-Platform,
-Text,
-View,
-TextInput,
-StyleSheet,
-TouchableOpacity,
-ActivityIndicator,
-Image,
-Modal
+  Text,
+  View,
+  Keyboard,
+  Nav,
+  StyleSheet,
 } from 'react-native';
-// import { Auth } from 'aws-amplify'
-// import { connect } from 'react-redux'
-// import { authenticate, confirmUserLogin } from '../actions'
 import { fonts, colors } from '../theme'
 import Input from '../components/Input'
 import Button from '../components/Button'
+import Toast from 'react-native-easy-toast'
+
+import { connect } from 'react-redux';
+import { signin } from '../actions';
+
 class LoginScreen extends React.Component {
   state = {
-    username: '',
+    id: '',
     password: '',
-    accessCode: ''
   }
-onChangeText = (key, value) => {
-this.setState({
+
+  // componentDidUpdate(prevProps) {
+  //   if(this.props.alert && this.props.alert !== prevProps.alert) {
+  //     this.refs.toast.show(this.props.alert.message);
+  //   }
+  // }
+
+  onChangeText = (key, value) => {
+    this.setState({
       [key]: value
     })
   }
-// signIn() {
-// const { username, password } = this.state
-// this.props.dispatchAuthenticate(username, password)
-//   }
-// confirm() {
-// const { authCode } = this.state
-// this.props.dispatchConfirmUserLogin(authCode)
-//   }
-render() {
-const { fontsLoaded } = this.state
-// const { auth: {
-// signInErrorMessage,
-// isAuthenticating,
-// signInError,
-// showSignInConfirmationModal
-//     }} = this.props
-return (
-<View style={styles.container}>
-<View style={styles.heading}>
-  <Text>Moment</Text>
-{/* <Image
-            source={require('../assets/shape.png')}
-            style={styles.headingImage}
-            resizeMode="contain"
-/> */}
-</View>
-<Text style={[styles.greeting]}>
-          Welcome back,
-</Text>
-<Text style={[styles.greeting2]}>
-          sign in to continue
-</Text>
-<View style={styles.inputContainer}>
-<Input
-            placeholder="User Name"
-            type='username'
-            onChangeText={this.onChangeText}
-            value={this.state.username}
-/>
-<Input
-            placeholder="Password"
-            type='password'
-            onChangeText={this.onChangeText}
-            value={this.state.password}
-            secureTextEntry
-/>
-</View>
-<Button
-          // isLoading={isAuthenticating}
+  
+  onPressButton = () => {
+    console.log("please");
+    this.props.signin(this.state.id, this.state.password);
+    this.setState({
+      id: '',
+      password: ''
+    })
+    this.refs.toast.show('hello, world!');
+  }
+
+  render() {
+    const { fontsLoaded } = this.state;
+  // const { auth: {
+  // signInErrorMessage,
+  // isAuthenticating,
+  // signInError,
+  // showSignInConfirmationModal
+  //     }} = this.props
+    return (
+      <View style={styles.container}>
+        <Toast 
+          ref='toast'
+          position='top'
+          opacity={0.8}
+          style={{backgroundColor:'red'}}
+        />
+        <View style={styles.heading}>
+          <Text>Moment</Text>
+        </View>
+        <Text style={[styles.greeting]}>
+                Welcome!
+        </Text>
+        <Text style={[styles.greeting2]}>
+                sign in to continue
+        </Text>
+        {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
+          <View style={styles.inputContainer}>
+            <Input
+              placeholder="ID"
+              type='id'
+              onSubmitEditing={Keyboard.dismiss}
+              onChangeText={this.onChangeText}
+              value={this.state.id}
+            />
+            <Input
+              placeholder="Password"
+              type='password'
+              onSubmitEditing={ Keyboard.dismiss }
+              onChangeText={ this.onChangeText}
+              value={ this.state.password }
+              secureTextEntry
+            />
+          </View>
+        <Button
           title='Sign In'
           onPress={() => this.props.navigation.navigate('Main')}
+          // onPress={ this.onPressButton }
+          disabled={ !this.state.id || !this.state.password }
           // onPress={this.signIn.bind(this)}
-/>   
-<Button
+        />   
+        <Button
           // isLoading={isAuthenticating}
           title='Sign Up'
           onPress={()=>this.props.navigation.navigate('Signup')}
           // onPress={this.signIn.bind(this)}
-/>     
+        />     
 {/* <Text style={[styles.errorMessage, signInError && { color: 'black' }]}>Error logging in. Please try again.</Text> */}
 {/* <Text style={[styles.errorMessage, signInError && { color: 'black' }]}>{signInErrorMessage}</Text> */}
         {
@@ -240,7 +121,7 @@ return (
 // </Modal>
 //           )
         }
-</View>
+      </View>
     );
   }
 }
@@ -252,7 +133,8 @@ return (
 //   auth: state.auth
 // })
 
-export default LoginScreen;
+// export default connect(({alerts}) => ({ alert: alerts.alert}), { signin })(LoginScreen);
+export default connect(null, { signin })(LoginScreen);
 
 const styles = StyleSheet.create({
   modal: {
@@ -262,10 +144,6 @@ const styles = StyleSheet.create({
   },
   heading: {
     flexDirection: 'row'
-  },
-  headingImage: {
-    width: 38,
-    height: 38
   },
   errorMessage: {
     fontSize: 12,
