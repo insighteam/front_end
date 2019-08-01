@@ -10,12 +10,8 @@ import {
 } from 'react-native';
 import { Container, Header, Content, Form, Item, Input, Label } from 'native-base';
 import { fonts, colors } from '../theme'
-// import Input from '../components/Input'
 import Button from '../components/Button'
 import Toast from 'react-native-easy-toast'
-
-// import { connect } from 'react-redux';
-// import { signin } from '../actions';
 
 class LoginScreen extends React.Component {
   constructor(props) {
@@ -42,7 +38,7 @@ class LoginScreen extends React.Component {
       return response.json()
     })
     .then(async(responseData) => {
-      await AsyncStorage.setItem('idx', JSON.stringify(responseData.data.idx));
+      await AsyncStorage.setItem('user', responseData.data);
       await AsyncStorage.setItem('wallet', JSON.stringify(responseData.data.wallet_address));
       this.props.navigation.navigate('Main');
     })
@@ -76,7 +72,7 @@ class LoginScreen extends React.Component {
           style={{backgroundColor:'red'}}
         />
         <View style={styles.heading}>
-          <Text>Moment</Text>
+          <Text style={{color: colors.temp2}}>Moment</Text>
         </View>
         <Text style={[styles.greeting]}>
                 Welcome!
@@ -88,16 +84,20 @@ class LoginScreen extends React.Component {
             <Item floatingLabel>
               <Label>ID</Label>
               <Input 
+                style={{color: colors.temp2}}
                 value={ this.state.id }
                 onChangeText={(id) => this.setState({id})}
+                placeholderTextColor={colors.temp2}
               />
             </Item>
             <Item floatingLabel>
               <Label>Password</Label>
               <Input 
+                style={{color: colors.temp2}}
                 value={this.state.password}
                 secureTextEntry
                 onChangeText={(password) => this.setState({password})}
+                placeholderTextColor={colors.temp2}
               />
             </Item>
           </Form>
@@ -179,12 +179,13 @@ const styles = StyleSheet.create({
   greeting: {
     marginTop: 20,
     fontSize: 24,
-    fontFamily: fonts.light
+    fontFamily: fonts.light,
+    color: colors.secondary
   },
   greeting2: {
-    color: '#666',
     fontSize: 24,
     marginTop: 5,
-    fontFamily: fonts.light
+    fontFamily: fonts.light,
+    color: colors.temp1
   }
 });

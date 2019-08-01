@@ -17,14 +17,6 @@ import Toast from 'react-native-easy-toast'
 import Input from '../components/Input'
 import Button from '../components/Button'
 
-const initialState = {
-  username: '',
-  password: '',
-  id: '',
-  phone_number: '',
-  authCode: ''
-}
-
 class SignupScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -101,16 +93,10 @@ class SignupScreen extends React.Component {
   }
 
   render() {
-    // const { auth: {
-    //   showSignUpConfirmationModal,
-    //   isAuthenticating,
-    //   signUpError,
-    //   signUpErrorMessage
-    // }} = this.props
     return (
       <View style={styles.container}>
         <View style={styles.heading}>
-          <Text>Heading</Text>
+          <Text style={{color: colors.temp2}}>Moment</Text>
         </View>
         <Text style={styles.greeting}>
           Welcome,
@@ -125,6 +111,7 @@ class SignupScreen extends React.Component {
               placeholder="User Name"
               type='username'
               onChangeText={this.onChangeText}
+              placeholderTextColor={colors.temp1}
             />
           </View>
           <Input
@@ -132,6 +119,7 @@ class SignupScreen extends React.Component {
             placeholder="ID"
             type='id'
             onChangeText={this.onChangeText}
+            placeholderTextColor={colors.temp1}
           />
           <Input
             value={this.state.password}
@@ -139,18 +127,21 @@ class SignupScreen extends React.Component {
             secureTextEntry
             type='password'
             onChangeText={this.onChangeText}
+            placeholderTextColor={colors.temp1}
           />
           <Input
             value={this.state.email}
             placeholder="email"
             type='email'
             onChangeText={this.onChangeText}
+            placeholderTextColor={colors.temp1}
           />
           <Input
             value={this.state.address}
             placeholder="address"
             type='address'
             onChangeText={this.onChangeText}
+            placeholderTextColor={colors.temp1}
           />
         </View>
         <Button
@@ -214,11 +205,12 @@ const styles = StyleSheet.create({
   greeting: {
     marginTop: 20,
     fontFamily: fonts.light,
-    fontSize: 24
+    fontSize: 24,
+    color: colors.secondary
   },
   greeting2: {
     fontFamily: fonts.light,
-    color: '#666',
+    color: colors.temp1,
     fontSize: 24,
     marginTop: 5
   },

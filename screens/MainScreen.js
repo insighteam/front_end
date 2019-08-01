@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 // import Button from '../components/Button';
 import { Container, Header, Content, List, ListItem, Thumbnail, Text, Left, Body, Right, Button } from 'native-base';
+import { colors } from '../theme';
 
 class MainScreen extends React.Component {
     constructor(props) {
@@ -26,13 +27,41 @@ class MainScreen extends React.Component {
                     end_date: "2020-03-30",
                     people_num: 4
                 },
-            ]
+            ],
+            hasInvitations: false,
+            idx: null
         };
     }    
 
-    
+    async getInvitation() {
+        await AsyncStorage.getItem('idx')
+            .then( data => {
+                this.setState({
+                    idx: data[0]
+                })
+        })
+        const url = 'http://10.250.72.159:3003/users/' + this.state.idx + '/invitations'
+        await fetch(url, {
+          method: 'GET',
+        })
+        .then((response) => {
+          return response.json()
+        })
+        .then(async(responseData) => {
+            if(responseData.status && responseData.status == 200 ) {
+                this.setState({
+                    hasInvitations: true
+                })
+            }
+        })
+        .catch(function(err) {
+          this.refs.toast.show(err);
+        })
+      }
 
     render() {
+        const idx = this.state;
+        const url = 'http://10.250.72.159:3003/users/' + idx + '/invitations'
         return (
             <Container>
                 <Content>
@@ -41,17 +70,17 @@ class MainScreen extends React.Component {
                             <List key={index}>
                                 <ListItem thumbnail>
                                     <Left>
-                                        <Text note numberOfLines={1}>사람 수</Text>
-                                        <Text>{item.people_num}</Text>
+                                        <Text note numberOfLines={1} style={{color: colors.secondary}}>사람 수 : </Text>
+                                        <Text style={{color: colors.primary}}>{item.people_num}</Text>
                                     </Left>
                                     <Body>
-                                        <Text>묻은 날짜 : {item.start_date}</Text>
-                                        <Text>오픈 날짜 : {item.end_date}</Text>
+                                        <Text style={{color: colors.temp2}}>묻은 날짜 : {item.start_date}</Text>
+                                        <Text style={{color: colors.temp2}}>오픈 날짜 : {item.end_date}</Text>
                                     </Body>
                                     <Right>
                                         {new Date(item.end_date) - new Date() <= 0 ?
-                                            <Button transparent light>
-                                                <Text>닫힘!</Text>
+                                            <Button transparent disabled>
+                                                <Text note numberOfLines={1}>닫힘!</Text>
                                             </Button>
                                             :
                                             <Button transparent
@@ -66,16 +95,22 @@ class MainScreen extends React.Component {
                         );
                     })}
                 </Content>
+                <Text>{String(this.state.hasInvitations)}</Text>
+                <Text>{this.state.idx}</Text>
                 <Button info large
+                    style={{flexDirection: "row", justifyContent: "center"}}
                     onPress={() => this.props.navigation.navigate('Invitation')}
                 >
                     <Text>Make time capsule!</Text>
                 </Button>
-                <Button primary large
-                    onPress={() => this.props.navigation.navigate('Content')}
-                >
-                    <Text>Check invitation!</Text>
-                </Button>
+                {this.state.hasInvitations? 
+                    <Button primary large
+                        style={{flexDirection: "row", justifyContent: "center"}}
+                        onPress={() => this.props.navigation.navigate('Content')}
+                    >
+                        <Text>Check invitation!</Text>
+                    </Button> : null
+                }
             </Container>
         )
     }

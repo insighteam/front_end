@@ -11,6 +11,7 @@ import Toast from 'react-native-easy-toast'
 import { Constants } from 'expo';
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions';
+import { colors } from '../theme';
 // import console = require('console');
 
 class MapScreen extends React.Component {
@@ -59,7 +60,11 @@ class MapScreen extends React.Component {
         let diff_latitude = this.state.latitude - this.state.capsuleLatitude;
         let diff_logitude = this.state.longitude - this.state.capsuleLongitude;
         if (Math.sqrt(Math.pow(diff_latitude, 2) + Math.pow(diff_logitude, 2)) >= 0.1) {
-            this.props.navigation.navigate('CapsuleDetail')
+            this.refs.toast.show('타임 캡슐에 접근하였습니다.', 1000, () => {
+                this.props.navigation.navigate('CapsuleDetail');
+            })
+        } else {
+            this.refs.toast.show('타임 캡슐에 가까이 가주세요.');
         }
     }
     
@@ -73,38 +78,49 @@ class MapScreen extends React.Component {
                 alignItems: 'center',
             },
             map: {
-                ...StyleSheet.absoluteFillObject,
+                // ...StyleSheet.absoluteFillObject,
+                height: 700, 
+                marginBottom: 5, 
+                marginTop: 5
             },
         });
 
         return (
-            <MapView 
-                style={styles.map}
-                region={{
-                    latitude: this.state.latitude,
-                    longitude: this.state.longitude,
-                    latitudeDelta: this.state.latitudeDelta,
-                    longitudeDelta: this.state.longitudeDelta,
-                }}
-                showsUserLocation={true}
-                // showsMyLocationButton={true}
-                followsUserLocation={true}
-                loadingEnabled={true}
-                showComapass={true}
-            >
-                <MapView.Marker
-                    coordinate={{
-                        latitude: this.state.capsuleLatitude,
-                        longitude: this.state.capsuleLongitude,
+            <View>
+                <Toast 
+                    ref='toast'
+                    position='top'
+                    opacity={0.8}
+                    style={{backgroundColor: colors.primary}}
+                />
+                <MapView 
+                    style={styles.map}
+                    region={{
+                        latitude: this.state.latitude,
+                        longitude: this.state.longitude,
+                        latitudeDelta: this.state.latitudeDelta,
+                        longitudeDelta: this.state.longitudeDelta,
                     }}
-                    title="타임 캡슐"
+                    showsUserLocation={true}
+                    // showsMyLocationButton={true}
+                    followsUserLocation={true}
+                    loadingEnabled={true}
+                    showComapass={true}
                 >
-                    <Image
-                        source={require("../assets/images/treasure.png")}
-                        style={{width: 40, height: 40}}
-                    />
-                </MapView.Marker>
-            </MapView>
+                    <MapView.Marker
+                        coordinate={{
+                            latitude: this.state.capsuleLatitude,
+                            longitude: this.state.capsuleLongitude,
+                        }}
+                        title="타임 캡슐"
+                    >
+                        <Image
+                            source={require("../assets/images/treasure.png")}
+                            style={{width: 40, height: 40}}
+                        />
+                    </MapView.Marker>
+                </MapView>
+            </View>
         );
     }
 }
