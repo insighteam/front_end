@@ -12,7 +12,8 @@ export default class ContentScreen extends React.Component {
 
         this.state = {
             text: null,
-            image: null
+            image: null,
+            money: 10000,
         }
     }
 
@@ -36,6 +37,33 @@ export default class ContentScreen extends React.Component {
             this.setState({ image: result.uri });
         }
     };
+
+    onAlertButtonPress = () => {
+        // this.props.navigation.navigate('Main')
+        this.props.navigator.push({
+            name: 'Main',
+            title: 'Moment'
+        })
+    }
+
+    showAlert() {
+        // let { money } = this.state
+        let desc = "1000원을 결제하시겠습니까?"
+
+        Alert.alert(
+            '결제',
+            desc,
+            [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                {text: 'OK', onPress: () => console.log('OK')},
+            ],
+            {cancelable: false},
+          );
+    }
 
     handleTextInput=(text)=>{                         //text
         this.setState({text: text});
@@ -63,7 +91,7 @@ export default class ContentScreen extends React.Component {
                 }
                 <View>
                     <Button large
-                        onPress={() => this.props.navigation.navigate('Main')}
+                        onPress={this.showAlert}
                         >
                         <Text style={{color:'white'}}>Keep the memory!</Text>
                     </Button>
