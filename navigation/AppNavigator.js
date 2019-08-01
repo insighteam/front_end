@@ -7,6 +7,7 @@ import LoginScreen from '../screens/LoginScreen';
 import SignupScreen from '../screens/SignupScreen';
 import MainScreen from '../screens/MainScreen';
 import InvitationScreen from '../screens/InvitationScreen';
+import ContentScreen from '../screens/ContentScreen';
 import MapScreen from '../screens/MapScreen';
 
 const RootStack = createStackNavigator({
@@ -26,12 +27,14 @@ const RootStack = createStackNavigator({
     screen: MainScreen,
     navigationOptions: {
       title: 'Moment',
-      headerRight: <Text>'sadfsadf'</Text>
     },
   },
   Invitation: {
     screen: InvitationScreen
   },
+  Content: {
+    screen: ContentScreen
+  }
 });
 
 const AppNavigator = createAppContainer(RootStack);

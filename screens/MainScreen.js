@@ -56,10 +56,15 @@ class MainScreen extends React.Component {
                         );
                     })}
                 </Content>
-                <Button full warning large
-                    onPress={() => this.props.navigation.navigate('Main')}
+                <Button info large
+                    onPress={() => this.props.navigation.navigate('Invitation')}
                 >
                     <Text>Make time capsule!</Text>
+                </Button>
+                <Button primary large
+                    onPress={() => this.props.navigation.navigate('Content')}
+                >
+                    <Text>Check invitation!</Text>
                 </Button>
             </Container>
         )

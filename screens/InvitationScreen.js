@@ -2,7 +2,10 @@ import React from 'react';
 import {
     View, 
     StyleSheet,
-    Button
+    Button,
+    Text,
+    TextInput,
+    FlatList
 } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import Toast from 'react-native-easy-toast'
@@ -47,7 +50,7 @@ class InvitationScreen extends React.Component {
         } else{
             monthDay = month * 30
         }
-        
+
         that.setState({
             date: year + '-' + month + '-' + date,
             dateSec: (date * 24 * 60 * 60) + (month * 24 * 60 * 60)
