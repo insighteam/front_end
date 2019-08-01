@@ -5,26 +5,51 @@ import {
   Keyboard,
   Nav,
   StyleSheet,
+  TextInput,
+  AsyncStorage
 } from 'react-native';
+import { Container, Header, Content, Form, Item, Input, Label } from 'native-base';
 import { fonts, colors } from '../theme'
-import Input from '../components/Input'
+// import Input from '../components/Input'
 import Button from '../components/Button'
 import Toast from 'react-native-easy-toast'
 
-import { connect } from 'react-redux';
-import { signin } from '../actions';
+// import { connect } from 'react-redux';
+// import { signin } from '../actions';
 
 class LoginScreen extends React.Component {
-  state = {
-    id: '',
-    password: '',
+  constructor(props) {
+    super(props);
+
+    this.state={
+      id: '',
+      password: ''
+    };
   }
 
-  // componentDidUpdate(prevProps) {
-  //   if(this.props.alert && this.props.alert !== prevProps.alert) {
-  //     this.refs.toast.show(this.props.alert.message);
-  //   }
-  // }
+  async signin(id, password) {
+    await fetch('http://10.250.72.159:3003/auth/signin', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        'id': id,
+        'password': password
+      }),
+    })
+    .then((response) => {
+      return response.json()
+    })
+    .then(async(responseData) => {
+      await AsyncStorage.setItem('idx', JSON.stringify(responseData.data.idx));
+      await AsyncStorage.setItem('wallet', JSON.stringify(responseData.data.wallet_address));
+      this.props.navigation.navigate('Main');
+    })
+    .catch(function(err) {
+      this.refs.toast.show(err);
+    })
+  }
 
   onChangeText = (key, value) => {
     this.setState({
@@ -33,23 +58,15 @@ class LoginScreen extends React.Component {
   }
   
   onPressButton = () => {
-    console.log("please");
-    this.props.signin(this.state.id, this.state.password);
+    this.signin(this.state.id, this.state.password);
     this.setState({
       id: '',
       password: ''
     })
-    this.refs.toast.show('hello, world!');
   }
 
   render() {
     const { fontsLoaded } = this.state;
-  // const { auth: {
-  // signInErrorMessage,
-  // isAuthenticating,
-  // signInError,
-  // showSignInConfirmationModal
-  //     }} = this.props
     return (
       <View style={styles.container}>
         <Toast 
@@ -67,28 +84,27 @@ class LoginScreen extends React.Component {
         <Text style={[styles.greeting2]}>
                 sign in to continue
         </Text>
-        {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
-          <View style={styles.inputContainer}>
-            <Input
-              placeholder="ID"
-              type='id'
-              onSubmitEditing={Keyboard.dismiss}
-              onChangeText={this.onChangeText}
-              value={this.state.id}
-            />
-            <Input
-              placeholder="Password"
-              type='password'
-              onSubmitEditing={ Keyboard.dismiss }
-              onChangeText={ this.onChangeText}
-              value={ this.state.password }
-              secureTextEntry
-            />
-          </View>
+          <Form>
+            <Item floatingLabel>
+              <Label>ID</Label>
+              <Input 
+                value={ this.state.id }
+                onChangeText={(id) => this.setState({id})}
+              />
+            </Item>
+            <Item floatingLabel>
+              <Label>Password</Label>
+              <Input 
+                value={this.state.password}
+                secureTextEntry
+                onChangeText={(password) => this.setState({password})}
+              />
+            </Item>
+          </Form>
         <Button
           title='Sign In'
-          onPress={() => this.props.navigation.navigate('Main')}
-          // onPress={ this.onPressButton }
+          // onPress={() => this.props.navigation.navigate('Main')}
+          onPress={ this.onPressButton }
           disabled={ !this.state.id || !this.state.password }
           // onPress={this.signIn.bind(this)}
         />   
@@ -134,7 +150,8 @@ class LoginScreen extends React.Component {
 // })
 
 // export default connect(({alerts}) => ({ alert: alerts.alert}), { signin })(LoginScreen);
-export default connect(null, { signin })(LoginScreen);
+// export default connect(null, { signin })(LoginScreen);
+export default LoginScreen;
 
 const styles = StyleSheet.create({
   modal: {

@@ -11,12 +11,8 @@ import {
   Modal
 } from 'react-native';
 
-// import { Auth } from 'aws-amplify'
-// import { connect } from 'react-redux'
-
 import { fonts, colors } from '../theme'
 import Toast from 'react-native-easy-toast'
-// import { createUser, confirmUserSignUp } from '../actions'
 
 import Input from '../components/Input'
 import Button from '../components/Button'
@@ -30,11 +26,60 @@ const initialState = {
 }
 
 class SignupScreen extends React.Component {
-  state = initialState
+  constructor(props) {
+    super(props);
+
+    this.state={
+      id: '',
+      password: '',
+      username: '',
+      address: '',
+      email: ''
+    };
+  }
+
+  async signup(id, password, name, email, address) {
+    await fetch('http://10.250.72.159:3003/auth/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        'id': id,
+        'password': password,
+        "name": name,
+        "email": email,
+        "address": address
+      }),
+    })
+    .then((response) => {
+      return response.json()
+    })
+    .then(async(responseData) => {
+      if(responseData.code && responseData.code == 200) {
+        this.props.navigation.navigate('Login');
+        this.refs.toast.show('회원가입 성공');
+      }
+    })
+    .catch(function(err) {
+      this.refs.toast.show(err);
+    })
+  }
 
   onChangeText = (key, value) => {
     this.setState({
       [key]: value
+    })
+  }
+
+  onPressButton = () => {
+    this.signup(this.state.id, this.state.password, this.state.username, this.state.email, this.state.address);
+    this.setState({
+      id: '',
+      password: '',
+      username: '',
+      email: '',
+      address: ''
     })
   }
 
@@ -81,7 +126,6 @@ class SignupScreen extends React.Component {
               type='username'
               onChangeText={this.onChangeText}
             />
-            {/* < */}
           </View>
           <Input
             value={this.state.id}
@@ -102,10 +146,16 @@ class SignupScreen extends React.Component {
             type='email'
             onChangeText={this.onChangeText}
           />
+          <Input
+            value={this.state.address}
+            placeholder="address"
+            type='address'
+            onChangeText={this.onChangeText}
+          />
         </View>
         <Button
           title='Sign Up'
-          onPress={this.signUp.bind(this)}
+          onPress={this.onPressButton}
         //   isLoading={isAuthenticating}
         />
         {/* <Text style={[styles.errorMessage, signUpError && { color: 'black' }]}>Error logging in. Please try again.</Text>

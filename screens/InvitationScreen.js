@@ -92,7 +92,37 @@ class InvitationScreen extends React.Component {
     }
     
     onRegionChange(region) {
-      this.setState({ region: region });
+        this.setState({ region: region });
+    }
+
+    async invite(id, latitude, longitude, money, end_date) {
+        const idx = await AsyncStorage.getItem('idx');
+        const url = 'http://10.250.72.159:3003/' + idx + '/invitations'
+        await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                'id': id,
+                'latitude': latitude,
+                'longitude': longitude,
+                'money': money,
+                'end_date': end_date
+            }),
+        })
+        .then((response) => {
+            return response.json()
+        })
+        .then(async(responseData) => {
+            if(responseData.code && responseData.code == 200) {
+                this.props.navigation.navigate('Main');
+                this.refs.toast.show('초대 성공');
+            }
+        })
+        .catch(function(err) {
+            this.refs.toast.show(err);
+        })
     }
     
     render() {
