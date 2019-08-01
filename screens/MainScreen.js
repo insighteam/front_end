@@ -47,9 +47,17 @@ class MainScreen extends React.Component {
                                         <Text>오픈 날짜 : {item.end_date}</Text>
                                     </Body>
                                     <Right>
-                                        <Button transparent>
-                                            <Text>열기!</Text>
-                                        </Button>
+                                        {new Date(item.end_date) - new Date() <= 0 ?
+                                            <Button transparent light>
+                                                <Text>닫힘!</Text>
+                                            </Button>
+                                            :
+                                            <Button transparent
+                                                onPress={() => this.props.navigation.navigate('Map')}
+                                            >
+                                                <Text>열기!</Text>
+                                            </Button>
+                                        }
                                     </Right>
                                 </ListItem>
                             </List>

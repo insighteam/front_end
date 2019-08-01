@@ -9,6 +9,7 @@ import MainScreen from '../screens/MainScreen';
 import InvitationScreen from '../screens/InvitationScreen';
 import ContentScreen from '../screens/ContentScreen';
 import MapScreen from '../screens/MapScreen';
+import CapsuleDetailScreen from '../screens/CapsuleDetailScreen';
 
 const RootStack = createStackNavigator({
   Login: {
@@ -29,11 +30,17 @@ const RootStack = createStackNavigator({
       title: 'Moment',
     },
   },
+  Map: {
+    screen: MapScreen
+  },
   Invitation: {
     screen: InvitationScreen
   },
   Content: {
     screen: ContentScreen
+  },
+  CapsuleDetail: {
+    screen: CapsuleDetailScreen
   }
 });
 

@@ -59,7 +59,7 @@ class MapScreen extends React.Component {
         let diff_latitude = this.state.latitude - this.state.capsuleLatitude;
         let diff_logitude = this.state.longitude - this.state.capsuleLongitude;
         if (Math.sqrt(Math.pow(diff_latitude, 2) + Math.pow(diff_logitude, 2)) >= 0.1) {
-            this.props.navigation.navigate('Main')
+            this.props.navigation.navigate('CapsuleDetail')
         }
     }
     
