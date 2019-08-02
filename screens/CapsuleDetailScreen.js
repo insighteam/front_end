@@ -13,17 +13,29 @@ class CapsuleDetailScreen extends React.Component {
           expanded: false,
           capsules: [
               {
-               writer: "A",
-               textContent: "DASFG",
+               writer: "이승진",
+               textContent: "#아나키즘 #블록체인최종목표 #화상전화개꿀잼",
               },
               {
-               writer: "B",
-               textContent: "FDGFG",
+               writer: "고현지",
+               textContent: "친구들아 해커톤 끝나고도 보자..ㅋ",
               },
               {
-               writer: "C",
-               textContent: "SDF",
+               writer: "이은영", 
+               textContent: "해커톤이 끝났다. 아싸!",
               },
+              {
+                writer: "이성희", 
+                textContent: "다들 정말 고생 많았어ㅎㅎ",
+               },
+              {
+                writer: "구영진",
+                textContent: "힘들지만 재밌었어 ㅎㅎ 또 보자!!!",
+            },
+            {
+                writer: "전용현",
+                textContent: "삶의 추억, 우리 기억, 그리고 모먼트...",                
+            }
           ]
       };
   }

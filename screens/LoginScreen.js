@@ -38,8 +38,8 @@ class LoginScreen extends React.Component {
       return response.json()
     })
     .then(async(responseData) => {
-      await AsyncStorage.setItem('user', responseData.data);
-      await AsyncStorage.setItem('wallet', JSON.stringify(responseData.data.wallet_address));
+      await AsyncStorage.setItem('idx', JSON.stringify(responseData.data.idx));
+      await AsyncStorage.setItem('wallet_address', JSON.stringify(responseData.data.wallet_address));
       this.props.navigation.navigate('Main');
     })
     .catch(function(err) {

@@ -60,7 +60,7 @@ class MapScreen extends React.Component {
         let diff_latitude = this.state.latitude - this.state.capsuleLatitude;
         let diff_logitude = this.state.longitude - this.state.capsuleLongitude;
         if (Math.sqrt(Math.pow(diff_latitude, 2) + Math.pow(diff_logitude, 2)) >= 0.1) {
-            this.refs.toast.show('타임 캡슐에 접근하였습니다.', 1000, () => {
+            this.refs.toast.show('타임 캡슐에 접근하였습니다.', 2000, () => {
                 this.props.navigation.navigate('CapsuleDetail');
             })
         } else {

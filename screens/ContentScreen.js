@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, View, TextInput, StyleSheet, Alert } from 'react-native';
+import { Image, View, TextInput, StyleSheet, Alert, YellowBox } from 'react-native';
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
@@ -19,11 +19,16 @@ export default class ContentScreen extends React.Component {
             end_date: null,
             end_seconds: null,
             money: 10000,
+            payment: false
         }
     }
 
     componentDidMount() {
         this._getPermissionAsync();
+
+        if(this.state.payment) {
+            this.props.navigation.navigate('Main');
+        }
     }
 
     _getPermissionAsync = async() => {
@@ -68,7 +73,7 @@ export default class ContentScreen extends React.Component {
         })
       }
 
-    async postContent(idx, text, image, latitude, longitude, start_date, end_date, end_seconds) {
+    async postContent(idx, text, image, latitude, longitude, start_date, end_date, end_seconds, money) {
         await fetch('http://10.250.72.159:3003/capsules', {
           method: 'POST',
           headers: {
@@ -82,32 +87,7 @@ export default class ContentScreen extends React.Component {
             "longitude": longitude,
             "start_date": start_date,
             "end_date": end_date,
-            "end_seconds": end_seconds
-          }),
-        })
-        .then((response) => {
-          return response.json()
-        })
-        .then(async(responseData) => {
-        //   if(responseData.code && responseData.code == 200) {
-        //     this.props.navigation.navigate('Login');
-        //     this.refs.toast.show('회원가입 성공');
-        //   }
-        })
-        .catch(function(err) {
-          this.refs.toast.show(err);
-        })
-    }
-
-    async postMoney(idx, capsule_address, money) {
-        await fetch('http://10.250.72.159:3003/capsules/money', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            "idx": idx,
-            "capsule_address": capsule_address,
+            "end_seconds": end_seconds,
             "money": money
           }),
         })
@@ -116,8 +96,9 @@ export default class ContentScreen extends React.Component {
         })
         .then(async(responseData) => {
           if(responseData.code && responseData.code == 200) {
-        //     this.props.navigation.navigate('Login');
-        //     this.refs.toast.show('회원가입 성공');
+            this.refs.toast.show('캡슐 생성 완료!', 500, () => {
+                this.props.navigation.navigate('Main');
+            });
           }
         })
         .catch(function(err) {
@@ -126,38 +107,47 @@ export default class ContentScreen extends React.Component {
     }
 
     onAlertButtonPress = () => {
-        // this.props.navigation.navigate('Main')
         this.props.navigator.push({
             name: 'Main',
             title: 'Moment'
         })
     }
 
-    showAlert() {
-        // let { money } = this.state
-        let desc = "1000원을 결제하시겠습니까?"
+    onAlertOKButtonPress = () => {
+        this.postContent()
+    }
+
+    showAlert = () => {
+        this.setState({
+            payment: true
+        })
 
         Alert.alert(
-            '결제',
-            desc,
+            "결제 완료",
+            "1000원을 결제하시겠습니까?",
             [
                 {
                     text: 'Cancel',
                     onPress: () => console.log('Cancel Pressed'),
                     style: 'cancel',
                 },
-                {text: 'OK', onPress: () => console.log('OK')},
+                {text: 'OK', onPress: () => this.onAlertOKButtonPress.bind(this)},
             ],
             {cancelable: false},
-          );
+        );
     }
 
-    handleTextInput=(text)=>{                         //text
+    handleTextInput=(text)=>{ 
         this.setState({text: text});
     };
 
     render() {
+        console.disableYellowBox = true; 
         let { image } = this.state;
+
+        if(this.state.payment) {
+            this.props.navigation.navigate('Main');
+        }
 
         return (
             <View style={{flex: 1, alignItems:"center", justifyContent:"center"}}>

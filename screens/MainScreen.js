@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
     View,
+    AsyncStorage
 } from 'react-native';
 // import Button from '../components/Button';
 import { Container, Header, Content, List, ListItem, Thumbnail, Text, Left, Body, Right, Button } from 'native-base';
@@ -14,18 +15,18 @@ class MainScreen extends React.Component {
             capsules: [
                 {
                     start_date: "2019-02-28",
-                    end_date: "2019-03-30",
+                    end_date: "2022-03-30",
                     people_num: 3
                 },
                 {
                     start_date: "2019-01-28",
-                    end_date: "2019-04-30",
+                    end_date: "2019-10-30",
                     people_num: 2
                 },
                 {
-                    start_date: "2017-02-28",
-                    end_date: "2020-03-30",
-                    people_num: 4
+                    start_date: "2019-08-01",
+                    end_date: "2019-08-02",
+                    people_num: 6
                 },
             ],
             hasInvitations: false,
@@ -33,11 +34,15 @@ class MainScreen extends React.Component {
         };
     }    
 
+    componentDidMount() {
+        this.getInvitation();
+    }
+
     async getInvitation() {
         await AsyncStorage.getItem('idx')
             .then( data => {
                 this.setState({
-                    idx: data[0]
+                    idx: data
                 })
         })
         const url = 'http://10.250.72.159:3003/users/' + this.state.idx + '/invitations'
@@ -60,6 +65,7 @@ class MainScreen extends React.Component {
       }
 
     render() {
+        console.disableYellowBox = true; 
         const idx = this.state;
         const url = 'http://10.250.72.159:3003/users/' + idx + '/invitations'
         return (
@@ -78,7 +84,7 @@ class MainScreen extends React.Component {
                                         <Text style={{color: colors.temp2}}>오픈 날짜 : {item.end_date}</Text>
                                     </Body>
                                     <Right>
-                                        {new Date(item.end_date) - new Date() <= 0 ?
+                                        {new Date(item.end_date) - new Date() >= 0 ?
                                             <Button transparent disabled>
                                                 <Text note numberOfLines={1}>닫힘!</Text>
                                             </Button>
@@ -95,8 +101,6 @@ class MainScreen extends React.Component {
                         );
                     })}
                 </Content>
-                <Text>{String(this.state.hasInvitations)}</Text>
-                <Text>{this.state.idx}</Text>
                 <Button info large
                     style={{flexDirection: "row", justifyContent: "center"}}
                     onPress={() => this.props.navigation.navigate('Invitation')}
